@@ -1,5 +1,5 @@
-import React from 'react';
-import { fade, makeStyles } from '@material-ui/core/styles';
+import React, {useState} from 'react';
+import {fade, makeStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export function Search() {
+export function Search({query = ""}) {
     const classes = useStyles();
 
     return (
@@ -78,14 +78,14 @@ export function Search() {
                         color="inherit"
                         aria-label="open drawer"
                     >
-                        <MenuIcon />
+                        <MenuIcon/>
                     </IconButton>
                     <Typography className={classes.title} variant="h6" noWrap>
                         Synack
                     </Typography>
                     <div className={classes.search}>
                         <div className={classes.searchIcon}>
-                            <SearchIcon />
+                            <SearchIcon/>
                         </div>
                         <InputBase
                             placeholder="Search…"
@@ -93,10 +93,11 @@ export function Search() {
                                 root: classes.inputRoot,
                                 input: classes.inputInput,
                             }}
-                            inputProps={{ 'aria-label': 'search' }}
+                            inputProps={{'aria-label': 'search'}}
+                            value={query}
                         />
                     </div>
-                    <div className={classes.grow} />
+                    <div className={classes.grow}/>
                 </Toolbar>
             </AppBar>
         </div>
