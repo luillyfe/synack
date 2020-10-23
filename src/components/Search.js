@@ -7,6 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -65,8 +66,17 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export function Search({query = ""}) {
+export function Search({query = "", submitQuery}) {
     const classes = useStyles();
+    const [queryText, setQuery] = useState(query)
+
+    const handleChange = ev => {
+        setQuery(ev.target.value)
+    }
+
+    const handleClick = () => {
+        submitQuery(queryText)
+    }
 
     return (
         <div className={classes.grow}>
@@ -94,10 +104,11 @@ export function Search({query = ""}) {
                                 input: classes.inputInput,
                             }}
                             inputProps={{'aria-label': 'search'}}
-                            value={query}
+                            value={queryText}
+                            onChange={handleChange}
                         />
                     </div>
-                    <div className={classes.grow}/>
+                    <Button color="inherit" onClick={handleClick}>Submit</Button>
                 </Toolbar>
             </AppBar>
         </div>

@@ -7,24 +7,39 @@ import {Results} from "./components/Results";
  * TODO: include .env file
  * */
 function App() {
-    const query = "Lectures"
-    const [google, setGoogleData] = useState([])
-    const [bing] = useState([])
+    const [state, setState] = useState({
+        query: "Lectures",
+        google: [],
+        bing: []})
+
+    const {query, google, bing} = state;
+
+    const setQuery = q => {
+        setState({query: q})
+    }
 
     useEffect(() => {
-        const url = `${process.env.REACT_APP_API_URL}&q=${query}`
-        fetch(url)
-            .then(res => res.json())
-            .then(res => {
-                console.log(res.items);
-                setGoogleData(res.items)
+        Promise.all([
+            fetch(`${process.env.REACT_APP_GOOGLE_API_URL}&q=${query}`),
+            fetch(`${process.env.REACT_APP_BING_API_URL}&q=${query}`, {
+                method: 'GET',
+                headers: {'Ocp-Apim-Subscription-Key': process.env.REACT_APP_BING_API_KEY}
+            })
+        ])
+            .then(([google, bing]) => Promise.all([google.json(), bing.json()]))
+            .then(([google, bing]) => {
+                setState({
+                    ...state,
+                    google: google.items,
+                    bing: bing.webPages.value,
+                })
             })
             .catch(console.error)
-    }, [query, setGoogleData])
+    }, [query, setState])
 
   return (
     <div className="App">
-        <Search query={query} />
+        <Search query={query} submitQuery={setQuery} />
         <Results data={{ google, bing }} />
     </div>
   );

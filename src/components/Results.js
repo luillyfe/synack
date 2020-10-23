@@ -13,27 +13,42 @@ const useStyles = makeStyles((theme) => ({
         backgroundColor: theme.palette.background.paper,
     },
     gridList: {
-        flexGrow: 1
+        flexBasis: '50%',
     },
     gridTileContent: {
         margin: '1em'
     }
 }));
 
-export function Results({ data: { google = [], bing = [] } }) {
+export function Results({data: {google = [], bing = []}}) {
     const classes = useStyles();
+
+    console.log(google, bing);
 
     return (
         <div className={classes.root}>
-            <GridList cellHeight={160} className={classes.gridList} cols={12}>
+            <GridList cellHeight={160} className={classes.gridList} cols={1}>
                 {google.map(({cols, snippet, link, title}, index) => (
-                    <GridListTile key={index} cols={cols || 6}>
+                    <GridListTile key={index} cols={cols || 1}>
                         <div className={classes.gridTileContent}>
                             {snippet}
                         </div>
                         <GridListTileBar
                             title={<a href={link}>{title}</a>}
                             subtitle={<span>by Google</span>}
+                        />
+                    </GridListTile>
+                ))}
+            </GridList>
+            <GridList cellHeight={160} className={classes.gridList} cols={1}>
+                {bing.map(({cols, snippet, url: link, name: title}, index) => (
+                    <GridListTile key={index} cols={cols || 1}>
+                        <div className={classes.gridTileContent}>
+                            {snippet}
+                        </div>
+                        <GridListTileBar
+                            title={<a href={link}>{title}</a>}
+                            subtitle={<span>by Bing</span>}
                         />
                     </GridListTile>
                 ))}
