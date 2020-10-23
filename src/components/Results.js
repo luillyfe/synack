@@ -17,14 +17,17 @@ const useStyles = makeStyles((theme) => ({
         flexBasis: '50%',
     },
     gridTileContent: {
-        margin: '1em'
-    }
+        margin: '0.375em'
+    },
+    gridTileBar: {
+        height: '45px'
+    },
+    link: { color: '#24354e' }
 }));
 
 export function Results({data: {google = [], bing = []}}) {
     const classes = useStyles();
 
-    // TODO: Handle when engines return irregular numbers of results
     return (
         <div className={classes.root}>
             <GridList cellHeight={160} className={classes.gridList} cols={1}>
@@ -34,8 +37,9 @@ export function Results({data: {google = [], bing = []}}) {
                             {snippet}
                         </div>
                         <GridListTileBar
-                            title={<a href={link}>{title}</a>}
+                            title={<a className={classes.link} href={link}>{title}</a>}
                             subtitle={<span>by Google</span>}
+                            className={classes.gridTileBar}
                         />
                     </GridListTile>
                 )) : <NoResults message="There is no results for Google" />}
@@ -47,8 +51,9 @@ export function Results({data: {google = [], bing = []}}) {
                             {snippet}
                         </div>
                         <GridListTileBar
-                            title={<a href={link}>{title}</a>}
+                            title={<a className={classes.link} href={link}>{title}</a>}
                             subtitle={<span>by Bing</span>}
+                            className={classes.gridTileBar}
                         />
                     </GridListTile>
                 )) : <NoResults message="There is no results for Bing" />}

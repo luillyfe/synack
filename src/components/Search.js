@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
     grow: {
         flexGrow: 1,
     },
+    toolbar: {backgroundColor: '#0c1f3b'},
     menuButton: {
         marginRight: theme.spacing(2),
     },
@@ -61,7 +62,9 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     engineSelector: {
-        marginLeft: 'auto'
+        marginLeft: 'auto',
+        background: 'white',
+        borderRadius: '10px'
     }
 }));
 
@@ -93,7 +96,7 @@ export function Search({submitQuery}) {
     return (
         <div className={classes.grow}>
             <AppBar position="static" >
-                <Toolbar>
+                <Toolbar className={classes.toolbar}>
                     <IconButton
                         edge="start"
                         className={classes.menuButton}
