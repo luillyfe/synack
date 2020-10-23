@@ -1,49 +1,26 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import './App.css';
 import {Search} from "./components/Search";
-import {Results} from "./components/Results";
+import Results from "./containers/Results";
+import {requestResults} from "./containers/Results/actions";
+import {connect} from "react-redux";
 
 /**
  * TODO: include .env file
  * */
-function App() {
-    const [state, setState] = useState({
-        query: "",
-        google: [],
-        bing: []})
-
-    const {query, google, bing} = state;
-
-    const setQuery = q => {
-        setState({...state, query: q})
+function App({requestResults}) {
+    const handleSearch = (query, engine) => {
+            requestResults(query, engine)
     }
 
-    useEffect(() => {
-        // TODO: Handle when engines return irregular numbers of results
-        Promise.all([
-            fetch(`${process.env.REACT_APP_GOOGLE_API_URL}&q=${query}`),
-            fetch(`${process.env.REACT_APP_BING_API_URL}&q=${query}`, {
-                method: 'GET',
-                headers: {'Ocp-Apim-Subscription-Key': process.env.REACT_APP_BING_API_KEY}
-            })
-        ])
-            .then(([google, bing]) => Promise.all([google.json(), bing.json()]))
-            .then(([google, bing]) => {
-                setState({
-                    ...state,
-                    google: google.items,
-                    bing: bing.webPages.value,
-                })
-            })
-            .catch(console.error)
-    }, [query, setState])
-
-  return (
-    <div className="App">
-        <Search query={query} submitQuery={setQuery} />
-        <Results data={{ google, bing }} />
-    </div>
-  );
+    return (
+        <div className="App">
+            <Search submitQuery={handleSearch}/>
+            <Results/>
+        </div>
+    );
 }
 
-export default App;
+const mapStateToProps = () => ({})
+const mapDispatchToProps = {requestResults}
+export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -8,6 +8,8 @@ import InputBase from '@material-ui/core/InputBase';
 import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const useStyles = makeStyles((theme) => ({
     grow: {
@@ -58,30 +60,39 @@ const useStyles = makeStyles((theme) => ({
             width: '20ch',
         },
     },
-    sectionDesktop: {
-        display: 'none',
-        [theme.breakpoints.up('md')]: {
-            display: 'flex',
-        },
-    },
+    engineSelector: {
+        marginLeft: 'auto'
+    }
 }));
 
-export function Search({query = "", submitQuery}) {
+export function Search({submitQuery}) {
     const classes = useStyles();
-    const [queryText, setQuery] = useState(query)
+    const [queryText, setQuery] = useState("")
+    const engines = [
+        { value: 'Both', label: 'Both' },
+        { value: 'Google', label: 'Google' },
+        { value: 'Bing', label: 'Bing' },
+    ]
+    const [selectedEngine, setEngine] = useState(engines[0].value)
+    const wrapper = React.createRef();
 
     const handleChange = ev => {
         setQuery(ev.target.value)
     }
 
+    const handleEngineChange = ev => {
+        ev.stopPropagation()
+        setEngine(ev.target.value)
+    }
+
     const handleClick = ev => {
         ev.preventDefault()
-        submitQuery(queryText)
+        submitQuery(queryText, selectedEngine)
     }
 
     return (
         <div className={classes.grow}>
-            <AppBar position="static">
+            <AppBar position="static" >
                 <Toolbar>
                     <IconButton
                         edge="start"
@@ -109,6 +120,20 @@ export function Search({query = "", submitQuery}) {
                             onChange={handleChange}
                         />
                     </form>
+                    <TextField
+                        id="engine-selector"
+                        select
+                        value={selectedEngine}
+                        onChange={handleEngineChange}
+                        className={classes.engineSelector}
+                        inputProps={wrapper}
+                    >
+                        {engines.map((option) => (
+                            <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                            </MenuItem>
+                        ))}
+                    </TextField>
                     <Button color="inherit" type="submit" onClick={handleClick}>Search</Button>
                 </Toolbar>
             </AppBar>

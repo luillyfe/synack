@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
 export function Results({data: {google = [], bing = []}}) {
     const classes = useStyles();
 
+    // TODO: Handle when engines return irregular numbers of results
     return (
         <div className={classes.root}>
             <GridList cellHeight={160} className={classes.gridList} cols={1}>
