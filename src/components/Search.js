@@ -74,7 +74,8 @@ export function Search({query = "", submitQuery}) {
         setQuery(ev.target.value)
     }
 
-    const handleClick = () => {
+    const handleClick = ev => {
+        ev.preventDefault()
         submitQuery(queryText)
     }
 
@@ -93,7 +94,7 @@ export function Search({query = "", submitQuery}) {
                     <Typography className={classes.title} variant="h6" noWrap>
                         Synack
                     </Typography>
-                    <div className={classes.search}>
+                    <form className={classes.search} onSubmit={handleClick}>
                         <div className={classes.searchIcon}>
                             <SearchIcon/>
                         </div>
@@ -107,8 +108,8 @@ export function Search({query = "", submitQuery}) {
                             value={queryText}
                             onChange={handleChange}
                         />
-                    </div>
-                    <Button color="inherit" onClick={handleClick}>Submit</Button>
+                    </form>
+                    <Button color="inherit" type="submit" onClick={handleClick}>Search</Button>
                 </Toolbar>
             </AppBar>
         </div>

@@ -8,17 +8,18 @@ import {Results} from "./components/Results";
  * */
 function App() {
     const [state, setState] = useState({
-        query: "Lectures",
+        query: "",
         google: [],
         bing: []})
 
     const {query, google, bing} = state;
 
     const setQuery = q => {
-        setState({query: q})
+        setState({...state, query: q})
     }
 
     useEffect(() => {
+        // TODO: Handle when engines return irregular numbers of results
         Promise.all([
             fetch(`${process.env.REACT_APP_GOOGLE_API_URL}&q=${query}`),
             fetch(`${process.env.REACT_APP_BING_API_URL}&q=${query}`, {

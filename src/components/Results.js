@@ -3,6 +3,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from "@material-ui/core/GridListTileBar";
+import {NoResults} from "./NoResults";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -23,12 +24,10 @@ const useStyles = makeStyles((theme) => ({
 export function Results({data: {google = [], bing = []}}) {
     const classes = useStyles();
 
-    console.log(google, bing);
-
     return (
         <div className={classes.root}>
             <GridList cellHeight={160} className={classes.gridList} cols={1}>
-                {google.map(({cols, snippet, link, title}, index) => (
+                {google.length ? google.map(({cols, snippet, link, title}, index) => (
                     <GridListTile key={index} cols={cols || 1}>
                         <div className={classes.gridTileContent}>
                             {snippet}
@@ -38,10 +37,10 @@ export function Results({data: {google = [], bing = []}}) {
                             subtitle={<span>by Google</span>}
                         />
                     </GridListTile>
-                ))}
+                )) : <NoResults message="There is no results for Google" />}
             </GridList>
             <GridList cellHeight={160} className={classes.gridList} cols={1}>
-                {bing.map(({cols, snippet, url: link, name: title}, index) => (
+                {bing.length ? bing.map(({cols, snippet, url: link, name: title}, index) => (
                     <GridListTile key={index} cols={cols || 1}>
                         <div className={classes.gridTileContent}>
                             {snippet}
@@ -51,7 +50,7 @@ export function Results({data: {google = [], bing = []}}) {
                             subtitle={<span>by Bing</span>}
                         />
                     </GridListTile>
-                ))}
+                )) : <NoResults message="There is no results for Bing" />}
             </GridList>
         </div>
     );
